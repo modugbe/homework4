@@ -1,0 +1,105 @@
+---
+title: "Homework4 Submission1"
+author: "Moyo Odugbemi"
+subtitle: "https://github.com/modugbe/homework4"
+format: 
+   pdf: 
+     df-print: default
+     output-file: "odugbemi-m-hwk4-1"
+     output-ext: "pdf"
+     header-includes:
+        - \usepackage{float}
+        - \floatplacement{table}{H}
+---
+
+
+```{r results="hide", echo=FALSE, message=FALSE}
+#| include: false
+
+if (!require("pacman")) install.packages("pacman")
+pacman::p_load(tidyverse, ggplot2, dplyr, lubridate, readr, readxl, hrbrthemes, fixest,
+               scales, gganimate, gapminder, gifski, png, tufte, plotly, OECD,
+               ggrepel, survey, foreign, devtools, pdftools, kableExtra, modelsummary,
+               kableExtra)
+```
+
+
+
+```{r results="hide", echo=FALSE, message=FALSE}
+#| include: false
+#| eval: true
+ 
+load("/Users/moyosoreoluwaodugbemi/Econ 470/Homework3/submission1/results/Hw3_workspace.Rdata")
+```
+
+
+\newpage
+#Question 1
+```{r results="hide", echo=FALSE, message=FALSE}
+
+```
+
+\newpage
+#Question 2
+```{r results="asis", echo=FALSE, message=FALSE}
+
+```
+
+\newpage
+#Question 3
+
+```{r results="hide", echo=FALSE, message=FALSE}
+
+```
+
+\newpage
+#Question 4
+
+```{r results="hide", echo=FALSE, message=FALSE}
+
+```
+
+\newpage
+#Question 5
+
+
+\newpage
+#Question 6
+
+```{r results="asis", echo=FALSE, message=FALSE}
+
+```
+
+
+
+\newpage
+#Question 7 <br>
+
+```{r results="hide", echo=FALSE, message=FALSE}
+
+```
+
+
+\newpage
+#Question 8 <br>
+
+```{r results="hide", echo=FALSE, message=FALSE}
+
+```
+
+
+\newpage
+#Question 9 <br>
+
+```{r results="hide", echo=FALSE, message=FALSE}
+
+```
+
+\newpage
+#Question 10
+```{r results="asis", echo=FALSE, message=FALSE, warning=FALSE}
+#| echo: false
+#| label: tbl-est-results
+#| tbl-cap: "Estimation results"
+#| 
+
