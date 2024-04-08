@@ -1,4 +1,191 @@
 # Preliminaries -----------------------------------------------------------
 if (!require("pacman")) install.packages("pacman")
-pacman::p_load(tidyverse, ggplot2, dplyr, lubridate, stringr, readxl, data.table, gdata, fixest)
+pacman::p_load(tidyverse, ggplot2, dplyr, lubridate, stringr, readxl, data.table, gdata, fixest, scales)
 
+
+# Read data and set workspace for knitr -------------------------------
+full.ma.data <- readRDS('data/output/full_ma_data.rds')
+final.data <- readRDS('data/output/final_ma_data.rds')
+contract.service.area <- readRDS('data/output/contract_service_area.rds')
+ma.penetration.data <- readRDS('data/output/ma_penetration.rds')
+plan.premiums <- readRDS('data/output/plan_premiums.rds')
+
+final.plans <- final.data %>%
+  filter(snp == "No"  &
+           (planid < 800 | planid >= 900) &
+           partcd_score > 0)
+
+plan_counts <- final.plans %>%
+ group_by(county, year) %>%
+  summarize(plan_count = n_distinct(planid))
+
+number1 <- ggplot(plan_counts, aes(x= year, y = plan_count, fill = county)) +
+  geom_boxplot() +
+  labs(x = "Year", y = "Plan Count", title = "Distribution of Plan Counts by County Over Time") +
+  theme_minimal()
+
+
+
+# 2
+star_ratings_subset <- final.data %>%
+  filter(year %in% c(2010, 2012, 2015))
+
+star_rating_distribution <- star_ratings_subset %>%
+  group_by(year, partc_score) %>%
+  summarise(count = n())
+
+number2 <- ggplot(star_rating_distribution, aes(x = as.factor(partc_score), y = count, na.rm = TRUE, fill = as.factor(partc_score))) +
+  geom_bar(stat = "identity") +
+  facet_wrap(~ year, scales = "free") +
+  labs(x = "Star Rating", y = "Count", title = "Distribution of Star Ratings (2010, 2012, 2015)") +
+  theme_minimal()
+
+
+
+# 3
+benchmark_data <- final.data %>% filter(year >= 2010 & year <= 2015)
+
+average_benchmark_payment <- benchmark_data %>%
+  group_by(year) %>%
+  summarize(avg_benchmark_payment = mean(payment_partc, na.rm = TRUE))
+
+number3 <- ggplot(average_benchmark_payment, aes(x = year, y = avg_benchmark_payment)) +
+  geom_line() +
+  labs(x = "Year", y = "Average Benchmark Payment", title = "Average Benchmark Payment Over Time (2010-2015)") +
+  theme_minimal()
+
+payment_increase <- diff(average_benchmark_payment$avg_benchmark_payment)
+payment_increase
+
+
+
+#4
+benchmark_data <- benchmark_data %>%
+  mutate(ma_share = avg_enrolled / avg_eligibles) %>%
+  group_by(year) 
+  
+# Plot the average share of Medicare Advantage over time
+number4 <- ggplot(benchmark_data, aes(x = year, y = ma_share)) +
+  geom_line() +
+  labs(x = "Year", y = "Average Share of Medicare Advantage", title = "Average Share of Medicare Advantage Over Time (2010-2015)")
+
+correlation <- cor(benchmark_data$ma_share, benchmark_data$payment_partc)
+correlation
+
+
+
+#5
+ma.data <- read_rds("data/output/final_ma_data.rds")
+ma.data.clean <- ma.data %>%
+  filter(!is.na(avg_enrollment) & year==2009 & !is.na(partc_score)) #<<
+  ma.data.clean <- ma.data.clean %>%
+  mutate(raw_rating=rowMeans(
+    cbind(breastcancer_screen,rectalcancer_screen,cv_cholscreen,diabetes_cholscreen,
+          glaucoma_test,monitoring,flu_vaccine,pn_vaccine,physical_health,
+          mental_health,osteo_test,physical_monitor,primaryaccess,
+          hospital_followup,depression_followup,nodelays,carequickly,
+          overallrating_care,overallrating_plan,calltime,
+          doctor_communicate,customer_service,osteo_manage,
+          diabetes_eye,diabetes_kidney,diabetes_bloodsugar,
+          diabetes_chol,antidepressant,bloodpressure,ra_manage,
+          copd_test,betablocker,bladder,falling,appeals_timely,
+          appeals_review),
+    na.rm=T)) %>%
+  select(contractid, planid, fips, avg_enrollment, state, county, raw_rating, partc_score,
+         avg_eligibles, avg_enrolled, premium_partc, risk_ab, Star_Rating,
+         bid, avg_ffscost, ma_rate)
+
+number5 <- ma.data.clean %>% 
+  ggplot(aes(x=as.factor(Star_Rating))) + 
+  geom_bar() +
+  labs(
+    x="Star Rating",
+    y="Count of Plans",
+    title="Frequency Distribution of Star Ratings"
+  ) + theme_bw()  
+
+
+
+# 6
+#effects of  3 star vs. 2.5 star - bandwidth 0.125
+ma.rd1 <- ma.data.clean %>%
+  filter(Star_Rating==2 | Star_Rating==2.5)
+  
+ma.rd1 <- ma.rd1 %>%
+  mutate(score = raw_rating - 2.25,
+         treat = (score>=0),
+         window1 = (score>=-.125 & score<=.125),
+         window2 = (score>=-.1 & score<=.1),
+         mkt_share = avg_enrollment/avg_eligibles,
+         ln_share = log(mkt_share),
+         score_treat=score*treat)
+star25.1 <- lm(mkt_share ~ score + treat, data=ma.rd1)
+star25.2 <- lm(mkt_share ~ score + treat, data= (ma.rd1 %>% filter(window1==TRUE)))
+star25.3 <- lm(mkt_share ~ score + treat + score_treat, data= (ma.rd1 %>% filter(window1==TRUE)))
+star25.4 <- lm(mkt_share ~ score + treat + score_treat, data= (ma.rd1 %>% filter(window2==TRUE)))
+est1 <- as.numeric(star25.1$coef[3])
+est2 <- as.numeric(star25.2$coef[3])
+est3 <- as.numeric(star25.3$coef[3])
+est4 <- as.numeric(star25.4$coef[3])
+
+rows <- tribble(~term, ~ m1, ~ m2, ~ m3 , ~ m4,
+                'Bandwidth', "0.125", "0.1", "0.1", "0.125")
+attr(rows, 'position')  <- 7
+
+if (!require("pacman")) install.packages("pacman")
+pacman::p_load(tidyverse, ggplot2, dplyr, lubridate, stringr, readxl, data.table, gdata, fixest, scales,
+               modelsummary, rdrobust, rddensity, MatchIt, cobalt)
+
+number6 <- modelsummary(list(star25.1, star25.2, star25.3, star25.4),
+          keep=c("score", "treatTRUE", "score_treat"),
+          coef_map=c("score"="Raw Score", 
+                    "treatTRUE"="Treatment",
+                    "score_treat"="Score x Treat"),
+          gof_map=c("nobs", "r.squared"),
+          add_rows=rows)
+
+#effects of  3.5 star vs. 2.5 star - bandwidth 0.125       
+ma.rd225 <- ma.data.clean %>%
+  filter(Star_Rating==2 | Star_Rating==2.5) %>%
+  mutate(score = raw_rating - 2.25,
+         treat = (score>=0),
+         window1 = (score>=-.175 & score<=.175),
+         window2 = (score>=-.125 & score<=.125),
+         mkt_share = avg_enrollment/avg_eligibles,
+         ln_share = log(mkt_share),
+         score_treat=score*treat)
+
+est225 <- rdrobust(y=ma.rd225$mkt_share, x=ma.rd225$score, c=0,
+                 h=0.125, p=1, kernel="uniform", vce="hc0",
+                 masspoints="off")
+summary(est225)
+
+# 7
+number7 <- rdplot(y=ma.rd1$mkt_share, x=ma.rd1$score, binselect="es",
+       title="RD Plot: Market Share", x.label="Summary Score",
+       y.label="Market Share", masspoints="off")
+
+
+# 8
+dens225 <- rddensity(ma.rd225$score, c=0)
+number8 <- rdplotdensity(dens225, ma.rd225$score)
+
+
+#9
+match.dat <- matchit(treat~premium_partc + ma_rate, 
+                     data=ma.rd225 %>% 
+                       filter(window2==TRUE, 
+                              !is.na(treat), 
+                              !is.na(premium_partc), 
+                              !is.na(ma_rate)),
+                     method=NULL, distance="mahalanobis")
+number9 <- love.plot(match.dat, abs=TRUE) 
+
+
+#10
+
+
+rm(list=c("full.ma.data", "contract.service.area",
+           "ma.penetration.data", "plan.premiums", "final.plans",
+           "final.data"))
+save.image("submission1/Hwk4_workspace.Rdata")

@@ -15,14 +15,14 @@ pacman::p_load(tidyverse, ggplot2, dplyr, lubridate, stringr, readxl, data.table
 
 # Call individual scripts -------------------------------------------------
 
-source("data-code/1_Plan_Data.R")
-source("data-code/2_Plan_Characteristics.R")
-source("data-code/3_Service_Areas.R")
-source("data-code/4_Penetration_Files.R")
-source("data-code/5_Star_Ratings.R")
-source("data-code/6_Risk_Rebates.R")
-source("data-code/7_MA_Benchmark.R")
-source("data-code/8_FFS_Costs.R")
+source("submission1/data-code/1_Plan_Data.R")
+source("submission1/data-code/2_Plan_Characteristics.R")
+source("submission1/data-code/3_Service_Areas.R")
+source("submission1/data-code/4_Penetration_Files.R")
+source("submission1/data-code/5_Star_Ratings.R")
+source("submission1/data-code/6_Risk_Rebates.R")
+source("submission1/data-code/7_MA_Benchmark.R")
+source("submission1/data-code/8_FFS_Costs.R")
 
 
 
@@ -47,10 +47,10 @@ final.data <- full.ma.data %>%
            !is.na(planid) & !is.na(fips))
 
 final.data <- final.data %>%
-  left_join( star.ratings %>%
+  left_join(star.ratings %>%
                select(-contract_name, -org_type, -org_marketing), 
              by=c("contractid", "year")) %>%
-  left_join( ma.penetration.data %>% ungroup() %>% select(-ssa) %>%
+  left_join(ma.penetration.data %>% ungroup() %>% select(-ssa) %>%
                rename(state_long=state, county_long=county), 
              by=c("fips", "year"))
 
@@ -74,12 +74,12 @@ final.data <- final.data %>%
             by=c("state"))
 
 final.data <- final.data %>%
-  left_join( plan.premiums,
+  left_join(plan.premiums,
              by=c("contractid","planid","state_name"="state","county","year")) %>%
-  left_join( risk.rebate.final %>%
+  left_join(risk.rebate.final %>%
                select(-contract_name, -plan_type),
              by=c("contractid","planid","year")) %>%
-  left_join( benchmark.final,
+  left_join(benchmark.final,
              by=c("ssa","year"))
 
 
@@ -118,7 +118,7 @@ final.data <- final.data %>%
 
 # incorporate ffs cost data by ssa
 final.data <- final.data %>%
-  left_join( ffs.costs.final %>%
+  left_join(ffs.costs.final %>%
                select(-state), 
              by=c("ssa","year")) %>%
   mutate(avg_ffscost = case_when(
