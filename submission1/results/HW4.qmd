@@ -1,6 +1,7 @@
 ---
 title: "Homework4 Submission1"
 author: "Moyo Odugbemi"
+prefer-html: true
 subtitle: "https://github.com/modugbe/homework4"
 format: 
    pdf: 
@@ -20,7 +21,7 @@ if (!require("pacman")) install.packages("pacman")
 pacman::p_load(tidyverse, ggplot2, dplyr, lubridate, readr, readxl, hrbrthemes, fixest,
                scales, gganimate, gapminder, gifski, png, tufte, plotly, OECD,
                ggrepel, survey, foreign, devtools, pdftools, kableExtra, modelsummary,
-               kableExtra)
+               kableExtra, webshot2, knitr)
 ```
 
 
@@ -29,77 +30,69 @@ pacman::p_load(tidyverse, ggplot2, dplyr, lubridate, readr, readxl, hrbrthemes, 
 #| include: false
 #| eval: true
  
-load("/Users/moyosoreoluwaodugbemi/Econ 470/Homework3/submission1/results/Hw3_workspace.Rdata")
+load("/Users/moyosoreoluwaodugbemi/Econ 470/Homework 4/submission1/Hwk4_workspace.Rdata")
 ```
 
 
 \newpage
 #Question 1
 ```{r results="hide", echo=FALSE, message=FALSE}
-
+number1
 ```
 
 \newpage
 #Question 2
 ```{r results="asis", echo=FALSE, message=FALSE}
-
+number2
 ```
 
 \newpage
 #Question 3
-
 ```{r results="hide", echo=FALSE, message=FALSE}
-
+number3
 ```
 
 \newpage
 #Question 4
-
 ```{r results="hide", echo=FALSE, message=FALSE}
-
+number4
 ```
 
 \newpage
 #Question 5
-
+```{r results="hide", echo=FALSE, message=FALSE}
+number5
+```
 
 \newpage
 #Question 6
 
 ```{r results="asis", echo=FALSE, message=FALSE}
-
-```
-
-
-
-\newpage
-#Question 7 <br>
-
-```{r results="hide", echo=FALSE, message=FALSE}
-
+#number6
 ```
 
 
 \newpage
-#Question 8 <br>
-
+#Question 7 
 ```{r results="hide", echo=FALSE, message=FALSE}
+#number7
+```
+The rdplot has not rendered in quarto :(
 
+
+\newpage
+#Question 8 
+```{r results="hide", echo=FALSE, message=FALSE}
+#number8
 ```
 
 
 \newpage
-#Question 9 <br>
-
+#Question 9 
 ```{r results="hide", echo=FALSE, message=FALSE}
-
+#number9
 ```
 
 \newpage
 #Question 10
-```{r results="asis", echo=FALSE, message=FALSE, warning=FALSE}
-#| echo: false
-#| label: tbl-est-results
-#| tbl-cap: "Estimation results"
-#| 
-
+I'm assuming that the effect of increasing a star rating will lead to an increase in enrollments. At this point, I am unable to confirm with the findings from 5-9 as I have not yet organized those results. 

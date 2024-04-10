@@ -1,0 +1,118 @@
+---
+title: "Homework4 Submission2"
+author: "Moyo Odugbemi"
+prefer-html: true
+subtitle: "https://github.com/modugbe/homework4"
+format: 
+   pdf: 
+     df-print: default
+     output-file: "odugbemi-m-hwk4-2"
+     output-ext: "pdf"
+     header-includes:
+        - \usepackage{float}
+        - \floatplacement{table}{H}
+---
+
+
+```{r results="hide", echo=FALSE, message=FALSE}
+#| include: false
+
+if (!require("pacman")) install.packages("pacman")
+pacman::p_load(tidyverse, ggplot2, dplyr, lubridate, readr, readxl, hrbrthemes, fixest,
+               scales, gganimate, gapminder, gifski, png, tufte, plotly, OECD,
+               ggrepel, survey, foreign, devtools, pdftools, kableExtra, modelsummary,
+               kableExtra, webshot2, knitr)
+```
+
+
+
+```{r results="hide", echo=FALSE, message=FALSE}
+#| include: false
+#| eval: true
+ 
+load("/Users/moyosoreoluwaodugbemi/Econ 470/Homework 4/submission2/Hwk4_workspace.Rdata")
+```
+
+
+\newpage
+#Question 1
+```{r results="hide", echo=FALSE, message=FALSE}
+number1
+```
+The number of plans is sufficient.
+
+\newpage
+#Question 2
+```{r results="asis", echo=FALSE, message=FALSE}
+number2
+```
+Distribution has shifted towards higher ratings over the years.
+
+\newpage
+#Question 3
+```{r results="hide", echo=FALSE, message=FALSE}
+number3
+total_payment_increase
+```
+
+
+\newpage
+#Question 4
+```{r results="hide", echo=FALSE, message=FALSE}
+number4
+```
+
+```{r results="asis", echo=FALSE, message=FALSE}
+correlation
+```
+
+
+\newpage
+#Question 5
+```{r results="asis", echo=FALSE, message=FALSE}
+#| echo: false
+#| label: Star Rating Count
+#| tbl-cap: "Star Rating Counts"
+
+options(knitr.kable.NA = 0)
+knitr::kable(number5, 
+             booktabs = TRUE) %>%
+             kable_styling(latex_options=c("scale_down"))
+```
+
+\newpage
+#Question 6
+
+```{r results="hide", echo=FALSE, message=FALSE}
+print(summary(star35_vs_3))
+```
+Having trouble extracting the coefficients because they are appearing as NA
+```{r results="hide", echo=FALSE, message=FALSE}
+print(summary(star3_vs_25))
+```
+
+
+\newpage
+#Question 7 
+```{r results="hide", echo=FALSE, message=FALSE}
+#number7
+```
+I'm running into getting NA values for all the estimate coefficients
+
+
+\newpage
+#Question 8 
+```{r results="hide", echo=FALSE, message=FALSE}
+number8a
+```
+
+
+\newpage
+#Question 9 
+```{r results="hide", echo=FALSE, message=FALSE}
+number9
+```
+
+\newpage
+#Question 10
+I'm assuming that the effect of increasing a star rating will lead to an increase in enrollments. At this point, I am unable to confirm with the findings from 5-9 as I have not fully organized those results. 
