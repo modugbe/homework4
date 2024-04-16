@@ -1,0 +1,115 @@
+---
+title: "Homework4 Submission3"
+author: "Moyo Odugbemi"
+prefer-html: true
+subtitle: "https://github.com/modugbe/homework4"
+format: 
+   pdf: 
+     df-print: default
+     output-file: "odugbemi-m-hwk4-3"
+     output-ext: "pdf"
+     header-includes:
+        - \usepackage{float}
+        - \floatplacement{table}{H}
+---
+
+
+```{r results="hide", echo=FALSE, message=FALSE}
+#| include: false
+
+if (!require("pacman")) install.packages("pacman")
+pacman::p_load(tidyverse, ggplot2, dplyr, lubridate, readr, readxl, hrbrthemes, fixest,
+               scales, gganimate, gapminder, gifski, png, tufte, plotly, OECD,
+               ggrepel, survey, foreign, devtools, pdftools, kableExtra, modelsummary,
+               kableExtra, webshot2, knitr)
+```
+
+
+
+```{r results="hide", echo=FALSE, message=FALSE}
+#| include: false
+#| eval: true
+ 
+load("/Users/moyosoreoluwaodugbemi/Econ 470/Homework 4/submission3/Hwk4_workspace.Rdata")
+```
+
+
+\newpage
+#Question 1
+```{r results="hide", echo=FALSE, message=FALSE}
+number1
+```
+What the plot shows is that there are some counties that have higher plan counts than others in a given year. I think making a judgement on the number of plans would require knowing the population of a county which affects the number of options people would need. Plan counts are lower in subsequent years than in 2010.
+
+\newpage
+#Question 2
+```{r results="asis", echo=FALSE, message=FALSE}
+number2
+```
+Distribution has shifted towards higher ratings over the years. Majority started in 2010 with 2.5 stars and that has become a majority with 4.0 ratings in 2015.
+
+\newpage
+#Question 3
+```{r results="hide", echo=FALSE, message=FALSE}
+number3
+```
+The average benchmark payment has decreased since 2010. Although there was a spiked increase in 2014, the total payment has changed by `r format(as.numeric(total_payment_increase, big.mark=",")
+
+\newpage
+#Question 4
+```{r results="hide", echo=FALSE, message=FALSE}
+number4
+```
+
+```{r results="asis", echo=FALSE, message=FALSE}
+correlation
+```
+
+
+\newpage
+#Question 5
+```{r results="asis", echo=FALSE, message=FALSE}
+#| echo: false
+#| label: Star Rating Count
+#| tbl-cap: "Star Rating Counts"
+
+options(knitr.kable.NA = 0)
+knitr::kable(number5, 
+             booktabs = TRUE) %>%
+             kable_styling(latex_options=c("scale_down"))
+```
+
+\newpage
+#Question 6
+
+```{r results="hide", echo=FALSE, message=FALSE}
+result_table6
+```
+
+
+
+
+\newpage
+#Question 7 
+```{r results="hide", echo=FALSE, message=FALSE}
+number7
+```
+
+
+
+\newpage
+#Question 8 
+```{r results="hide", echo=FALSE, message=FALSE}
+number8a
+```
+
+
+\newpage
+#Question 9 
+```{r results="hide", echo=FALSE, message=FALSE}
+#number9
+```
+
+\newpage
+#Question 10
+I'm assuming that the effect of increasing a star rating will lead to an increase in enrollments. At this point, I am unable to confirm with the findings from 5-9 as I have not fully organized those results. 
