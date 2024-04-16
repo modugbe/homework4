@@ -118,9 +118,10 @@ ma.data.clean <- ma.data.clean %>%
       ifelse(raw_rating > 4.75 & raw_rating < 5, 5, NA), NA)))))))
 
                    
-star_rating_counts <- ma.data.clean %>% ####works best, please don't touch
-    count(rounded_rating) %>% 
-    arrange(rounded_rating)
+star_rating_counts <- ma.data.clean %>%
+  filter(rounded_rating >= 3.0 & rounded_rating <= 5.0) %>%
+  count(rounded_rating) %>%
+  arrange(rounded_rating)
 
 if (!require("pacman")) install.packages("pacman")
 pacman::p_load(tidyverse, ggplot2, dplyr, lubridate, stringr, readxl, data.table, gdata, fixest, scales,

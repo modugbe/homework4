@@ -36,7 +36,7 @@ load("/Users/moyosoreoluwaodugbemi/Econ 470/Homework 4/submission3/Hwk4_workspac
 
 \newpage
 #Question 1
-```{r results="hide", echo=FALSE, message=FALSE}
+```{r results="hide", echo=FALSE, message=FALSE, warning=FALSE}
 number1
 ```
 What the plot shows is that there are some counties that have higher plan counts than others in a given year. I think making a judgement on the number of plans would require knowing the population of a county which affects the number of options people would need. Plan counts are lower in subsequent years than in 2010.
@@ -53,37 +53,42 @@ Distribution has shifted towards higher ratings over the years. Majority started
 ```{r results="hide", echo=FALSE, message=FALSE}
 number3
 ```
-The average benchmark payment has decreased since 2010. Although there was a spiked increase in 2014, the total payment has changed by `r format(as.numeric(total_payment_increase, big.mark=",")
+The average benchmark payment has decreased since 2010. Although there was a spiked increase in 2014, the total payment has changed by `r format(as.numeric(total_payment_increase), big.mark=",")`.
 
 \newpage
 #Question 4
-```{r results="hide", echo=FALSE, message=FALSE}
+```{r results="hide", echo=FALSE, message=FALSE, warning=FALSE}
 number4
 ```
+MA has rapidly increased in popularity over time. There is no strong correlation between MA share and benchmark payment since correlation = `r format(as.numeric(correlation), big.mark=",")`.
 
-```{r results="asis", echo=FALSE, message=FALSE}
-correlation
-```
 
 
 \newpage
 #Question 5
-```{r results="asis", echo=FALSE, message=FALSE}
+```{r results="asis", echo=FALSE, message=FALSE, warning=FALSE}
 #| echo: false
 #| label: Star Rating Count
 #| tbl-cap: "Star Rating Counts"
 
 options(knitr.kable.NA = 0)
-knitr::kable(number5, 
-             booktabs = TRUE) %>%
-             kable_styling(latex_options=c("scale_down"))
+knitr::kable(star_rating_counts, 
+          booktabs = TRUE) %>%
+          kable_styling(latex_options=c("scale_down"))
 ```
 
 \newpage
 #Question 6
 
-```{r results="hide", echo=FALSE, message=FALSE}
-result_table6
+```{r results="asis", echo=FALSE, message=FALSE, warning=FALSE}
+#| echo: false
+#| label: RD Estimates
+#| tbl-cap: "RD Estimates by Star Rating"
+
+options(knitr.kable.NA = 0)
+knitr::kable(result_table, 
+             booktabs = TRUE) %>%
+             kable_styling(latex_options=c("scale_down"))
 ```
 
 
@@ -92,24 +97,28 @@ result_table6
 \newpage
 #Question 7 
 ```{r results="hide", echo=FALSE, message=FALSE}
-number7
+plot_combined
 ```
-
+The results for 3.5 are quite consistent across bandwidths but the results for 3.0 are sensitive to bandwidth choice.
 
 
 \newpage
 #Question 8 
-```{r results="hide", echo=FALSE, message=FALSE}
+```{r results="hide", echo=FALSE, message=FALSE, warning=FALSE}
 number8a
 ```
-
-
+Manipulation is less likely at the 2.75 threshold since there are no significant jumps at the threshold. At the 3.25 threhold, there is a spike just above the thrshold that can indicate some manipulation. 
+```{r results="hide", echo=FALSE, message=FALSE, warning=FALSE}
+number8b
+```
 \newpage
+
 #Question 9 
 ```{r results="hide", echo=FALSE, message=FALSE}
-#number9
+plot.30
+plot.35
 ```
 
 \newpage
 #Question 10
-I'm assuming that the effect of increasing a star rating will lead to an increase in enrollments. At this point, I am unable to confirm with the findings from 5-9 as I have not fully organized those results. 
+The effect of increasing from 2.5 to 3.0 stars will lead to an increase in enrollments. The increase is not as signicant in 3.5 stars. People avoid low rated plans, but not neccessarily selecting for high rated plans.
